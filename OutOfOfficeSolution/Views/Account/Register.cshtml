@@ -1,0 +1,94 @@
+﻿@{
+    var role = User.IsInRole("Admin") ? "Admin" :
+               User.IsInRole("HR") ? "HR" :
+               User.IsInRole("PM") ? "PM" :
+               User.IsInRole("Employee") ? "Employee" : "quest";
+}
+@model RegisterViewModel
+
+<div class="center-container">
+<form asp-controller="Account" asp-action="Register" method="post" class="one-page-form">
+
+    <h2>Реєстрація працівника</h2>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password">Пароль</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Підтвердіть пароль</label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FullName">Повне ім'я'</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+        <div class="form-group">
+        <label asp-for="Position">Позиція</label>
+        <select asp-for="Position" class="form-control">
+            <option value="">Виберіть позицію</option>
+            @foreach (var item in ViewBag.Positions)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="Position" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Subdivision">Відділ</label>
+        <select asp-for="Subdivision" class="form-control">
+            <option value="">Виберіть відділ</option>
+            @foreach (var item in ViewBag.Subdivisions)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="Subdivision" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OutOfOfiiceBalance">Кількість днів відпустки</label>
+        <input asp-for="OutOfOfiiceBalance" type="number" class="form-control" />
+        <span asp-validation-for="OutOfOfiiceBalance" class="text-danger"></span>
+    </div>
+
+        @if (role == "HR")
+        {
+            <input type="hidden" asp-for="PeoplePartner" class="form-control" value="@ViewBag.CurrentHrId" />
+        }
+        else
+        {
+            <div class="form-group">
+                <label asp-for="PeoplePartner">HR менеджер</label>
+                <select asp-for="PeoplePartner" class="form-control">
+                    <option value="">-- Виберіть HR --</option>
+                    @foreach (var hr in ViewBag.ListOfHr)
+                    {
+                        <option value="@hr.Id">@hr.FullName</option>
+                    }
+                </select>
+                <span asp-validation-for="PeoplePartner" class="text-danger"></span>
+            </div>
+        }
+
+    <div class="form-group">
+        <label asp-for="Photo">Photo</label>
+        <input asp-for="Photo" class="form-control" />
+        <span asp-validation-for="Photo" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Зареєструвати</button>
+</form>
+</div>

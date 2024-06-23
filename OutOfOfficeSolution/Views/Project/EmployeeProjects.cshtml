@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "EmployeeProjects";
+
+    var role = User.IsInRole("Admin") ? "Admin" :
+               User.IsInRole("HR") ? "HR" :
+               User.IsInRole("PM") ? "PM" :
+               User.IsInRole("Employee") ? "Employee" : "quest";
+}
+
+@model List<ProjectViewModel>
+
+<h2>Проєкти</h2>
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <form method="get" asp-controller="Project" asp-action="EmployeeProjects" class="filter-form">
+        <tr>
+            <th>
+                <div class="form-group">
+                    <label for="projectType">Тип проєкту</label>
+                    <select name="projectType" class="form-control">
+                            @if (String.IsNullOrEmpty(ViewBag.CurrentProjectType))
+                            {
+                            <option value="">Виберіть тип проєкту</option>
+                            }
+                            else
+                            {
+                            <option value="@ViewBag.CurrentProjectType">@ViewBag.CurrentProjectType</option>
+                            }
+                            @foreach (var item in ViewBag.ProjectTypes)
+                            {
+                            <option value="@item.Value">@item.Text</option>
+                            }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <label for="status">Статус</label>
+                    <select name="status" class="form-control">
+                            @if (String.IsNullOrEmpty(ViewBag.CurrentStatus))
+                            {
+                            <option value="">Виберіть cтатус</option>
+                            }
+                            else
+                            {
+                            <option value="@ViewBag.CurrentStatus">@ViewBag.CurrentStatus</option>
+                            }
+                            @foreach (var item in ViewBag.Statuses)
+                            {
+                            <option value="@item.Value">@item.Text</option>
+                            }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <label for="option">Параметр</label>
+                    <select name="option" class="form-control">
+                            @if (String.IsNullOrEmpty(ViewBag.CurrentOption))
+                            {
+                            <option value="">Виберіть параметр сортування</option>
+                            }
+                            else
+                            {
+                            <option value="@ViewBag.CurrentOption">@ViewBag.CurrentOption</option>
+                            }
+                            @foreach (var item in ViewBag.Options)
+                            {
+                            <option value="@item.Value">@item.Text</option>
+                            }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <label for="direction">Напрямок</label>
+                    <select name="direction" class="form-control">
+                            @if (String.IsNullOrEmpty(ViewBag.CurrentDirection))
+                            {
+                            <option value="">Виберіть напрямок сортування</option>
+                            }
+                            else
+                            {
+                            <option value="@ViewBag.CurrentDirection">@ViewBag.CurrentDirection</option>
+                            }
+                            @foreach (var item in ViewBag.Directions)
+                            {
+                            <option value="@item.Value">@item.Text</option>
+                            }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <input type="hidden" name="IsForFiltering" value="true" />
+                <button class="btn-sm" type="submit">Виконати фільтрацію та сортування</button>
+            </th>
+        </tr>
+        </form>
+        </tr>
+    </thead>
+</table>
+
+@if (Model != null)
+{
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Тип</th>
+                <th>Дата створення</th>
+                <th>Дата завершення</th>
+                <th>Статус</th>
+                <th>Додаткова інформація</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model)
+            {
+                <tr>
+                    <td>@project.ProjectType</td>
+                    <td>@project.StartDate</td>
+                    <td>@project.EndDate</td>
+                    <td>@project.Status</td>
+                    <td>@project.Comment</td>
+                    @if (role != "Employee")
+                    {
+                        <td>
+                            <a asp-controller="Project" asp-action="Details" asp-route-projectId="@project.Id" class="btn btn-secondary">Деталі</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>Проєктів не знайдено</h2>
+}

@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Leave Requests";
+
+    var role = User.IsInRole("Admin") ? "Admin" :
+               User.IsInRole("HR") ? "HR" :
+               User.IsInRole("PM") ? "PM" :
+               User.IsInRole("Employee") ? "Employee" : "quest";
+}
+
+@model LeaveRequestViewModel
+
+<a asp-controller="LeaveRequest" asp-action="Index" class="btn btn-sm btn-info">Повернутися до заявок</a>
+
+@if (Model != null)
+{
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Відправник заявки</th>
+                <th>Причина відпустки</th>
+                <th>Дата початку відпустки</th>
+                <th>Дата кінця відпустки</th>
+                <th>Коментар</th>
+                <th>Статус</th>
+                <a asp-controller="LeaveRequest" asp-action="Create" class="btn btn-sm btn-info">Створити нову</a>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                <td>@Model.Employee!.FullName</td>
+                <td>@Model.AbsenceReason</td>
+                <td>@Model.StartDate</td>
+                <td>@Model.EndDate</td>
+                <td>@Model.Comment</td>
+                <td>@Model.Status</td>
+                @if (role == "Admin")
+                {
+                    <td><a asp-controller="LeaveRequest" asp-action="Update" asp-route-leaveRequestId="@Model.Id" class="btn btn-sm btn-info">Оновити заявку</a></td>
+                }
+                </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    
+}

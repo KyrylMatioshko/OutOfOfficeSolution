@@ -1,0 +1,39 @@
+﻿@model LeaveRequestViewModel
+
+<div class="center-container">
+    <form asp-controller="LeaveRequest" asp-action="Create" method="post" class="one-page-form">
+
+        <h2>Створення заявки на відпустку</h2>
+
+        <div class="form-group">
+            <input type="hidden" asp-for="@Model.Id" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="@Model.EmployeeId" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.AbsenceReason" class="control-label"></label>
+            <input asp-for="@Model.AbsenceReason" class="form-control" />
+            <span asp-validation-for="@Model.AbsenceReason" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.StartDate" class="control-label"></label>
+            <input asp-for="@Model.StartDate" class="form-control" />
+            <span asp-validation-for="@Model.StartDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.EndDate" class="control-label"></label>
+            <input asp-for="@Model.EndDate" class="form-control" />
+            <span asp-validation-for="@Model.EndDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Comment" class="control-label"></label>
+            <input asp-for="@Model.Comment" class="form-control" />
+            <span asp-validation-for="@Model.Comment" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Створити" />
+        </div>
+    </form>
+</div>

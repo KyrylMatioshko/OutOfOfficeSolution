@@ -1,0 +1,46 @@
+﻿@using OutOfOfficeSolution.ViewModels
+@model ProjectViewModel
+@{
+    var role = User.IsInRole("Admin") ? "Admin" :
+               User.IsInRole("HR") ? "HR" :
+               User.IsInRole("PM") ? "PM" :
+               User.IsInRole("Employee") ? "Employee" : "quest";
+}
+
+<h2>Детальна інформація про проєкт</h2>
+
+<a asp-controller="Project" asp-action="EmployeeProjects">Повернутися до проєктів</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Тип проєкта</th>
+            <th>Дата початку</th>
+            <th>Дата завершення</th>
+            <th>PM</th>
+            <th>Співробітники</th>
+            <th>Додаткова інформація</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.ProjectType</td>
+            <td>@Model.StartDate.ToString("yyyy-MM-dd")</td>
+            <td>@(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+            <td>@(Model.ProjectManager != null ? Model.ProjectManager.FullName : "-")</td>
+            <td>
+                @if (Model.Employees.Any())
+                {
+                    <span>@string.Join(", ", Model.Employees.Select(e => e.FullName))</span>
+                }
+                else
+                {
+                    <span>-</span>
+                }
+            </td>
+            <td>@(Model.Comment ?? "-")</td>
+            <td>@Model.Status</td>
+        </tr>
+    </tbody>
+</table>

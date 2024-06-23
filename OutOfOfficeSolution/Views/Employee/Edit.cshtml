@@ -1,0 +1,83 @@
+﻿@using OutOfOfficeSolution.Models
+@model EmployeeViewModel
+
+<div class="center-container">
+
+    <form asp-controller="Employee" asp-action="Edit" method="post" class="one-page-form">
+    
+    <h2>Редагування</h2>
+
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FullName">Повне ім'я'</label>
+        <input asp-for="FullName" class="form-control" value="@Model.FullName" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Position">Позиція</label>
+        <select asp-for="Position" class="form-control">
+            <option value="">Виберіть позицію</option>
+            @foreach (var item in ViewBag.Positions)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="Position" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Subdivision">Відділ</label>
+        <select asp-for="Subdivision" class="form-control">
+            <option value="">Виберіть відділ</option>
+            @foreach (var item in ViewBag.Subdivisions)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="Subdivision" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status">Статус</label>
+        <select asp-for="Status" class="form-control">
+            <option value="">Виберіть Статус</option>
+            @foreach (var item in ViewBag.Statuses)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div> 
+
+    <div class="form-group">
+        <label asp-for="OutOfOfficeBalance">Доступна кількість днів відпустки</label>
+        <input asp-for="OutOfOfficeBalance" type="number" class="form-control" value="@Model.OutOfOfficeBalance" />
+        <span asp-validation-for="OutOfOfficeBalance" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PeoplePartner">HR менеджер</label>
+        <select asp-for="PeoplePartner" class="form-control">
+            <option value="">-- Виберіть HR --</option>
+            @foreach (var hr in ViewBag.ListOfHr)
+            {
+                <option value="@hr.Id">@hr.FullName</option>
+            }
+        </select>
+        <span asp-validation-for="PeoplePartner" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Photo">Фото</label>
+        <input asp-for="Photo" class="form-control" value="@Model.Photo" />
+        <span asp-validation-for="Photo" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Змінити</button>
+</form>
+
+</div>

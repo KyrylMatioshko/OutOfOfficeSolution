@@ -1,0 +1,97 @@
+﻿@{
+    var role = User.IsInRole("Admin") ? "Admin" :
+               User.IsInRole("HR") ? "HR" :
+               User.IsInRole("PM") ? "PM" :
+               User.IsInRole("Employee") ? "Employee" : "quest";
+}
+@model ProjectViewModel
+
+<div class="center-container">
+<form asp-controller="Project" asp-action="Create" method="post" class="one-page-form">
+
+     <h2>Створення проєкту</h2>
+
+    <div class="form-group">
+        <input type="hidden" asp-for="@Model.Id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.StartDate" class="control-label"></label>
+        <input asp-for="@Model.StartDate" class="form-control" />
+        <span asp-validation-for="@Model.StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.EndDate" class="control-label"></label>
+        <input asp-for="@Model.EndDate" class="form-control" />
+        <span asp-validation-for="@Model.EndDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Comment" class="control-label"></label>
+        <input asp-for="@Model.Comment" class="form-control" />
+        <span asp-validation-for="@Model.Comment" class="text-danger"></span>
+    </div>
+        @if (role != "PM")
+        {
+            <div class="form-group">
+                <label asp-for="ProjectManagerId">Проєкт менеджер</label>
+                <select asp-for="ProjectManagerId" class="form-control">
+                    <option value="">-- Виберіть PM --</option>
+                    @foreach (var pm in ViewBag.ListOfPm)
+                    {
+                        <option value="@pm.Id">@pm.FullName</option>
+                    }
+                </select>
+                <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <input type="hidden" asp-for="ProjectManagerId" value="@ViewBag.CurrentPmId" class="form-control" />
+            </div>
+
+        }
+
+    <div class="form-group">
+        <label asp-for="ProjectType">Тип проєкту</label>
+        <select asp-for="ProjectType" class="form-control">
+            <option value="">Виберіть тип проєкту</option>
+            @foreach (var item in ViewBag.ProjectTypes)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="ProjectType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status">Статус</label>
+        <select asp-for="Status" class="form-control">
+            <option value="">Виберіть статус</option>
+            @foreach (var item in ViewBag.Statuses)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+        @if (Model.ListOfEmployee != null)
+        {
+            <div class="form-group">
+                <label>Виберіть працівників яких хочете додати до проєкту:</label><br />
+                @foreach (var employee in Model.ListOfEmployee)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="SelectedEmployeeIds" value="@employee.Id">
+                            @employee.FullName
+                        </label>
+                    </div>
+                }
+            </div>
+        }
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Створити"/>
+    </div>
+</form>
+</div>

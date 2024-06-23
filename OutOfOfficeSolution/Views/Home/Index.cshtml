@@ -1,0 +1,8 @@
+﻿@{
+    var role = User.IsInRole("Admin") ? "Admin" :
+               User.IsInRole("HR") ? "HR" :
+               User.IsInRole("PM") ? "PM" :
+               User.IsInRole("Employee") ? "Employee" : "";
+}
+
+<h1>Вітаю, @role</h1>

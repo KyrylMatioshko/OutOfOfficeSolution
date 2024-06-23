@@ -1,0 +1,70 @@
+﻿@using OutOfOfficeSolution.ViewModels
+@model ProjectViewModel
+
+
+<div class="center-container">
+<form asp-controller="Project" asp-action="Edit" method="post" class="one-page-form">
+
+    <h2>Редагування проєкту</h2>
+
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Comment">Коментар</label>
+        <input asp-for="Comment" class="form-control" value="@Model.Comment" />
+        <span asp-validation-for="Comment" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate">Дата початку</label>
+        <input asp-for="StartDate" class="form-control" value="@Model.StartDate" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate">Дата завершення</label>
+        <input asp-for="EndDate" class="form-control" value="@Model.EndDate" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProjectManagerId">PM менеджер</label>
+        <select asp-for="ProjectManagerId" class="form-control">
+            <option value="">-- Виберіть PM --</option>
+            @foreach (var pm in ViewBag.ListOfPm)
+            {
+                <option value="@pm.Id">@pm.FullName</option>
+            }
+        </select>
+        <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProjectType">Тип проєкту</label>
+        <select asp-for="ProjectType" class="form-control">
+            <option value="">Виберіть тип проєкту</option>
+            @foreach (var item in ViewBag.ProjectTypes as List<SelectListItem>)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="ProjectType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status">Статус</label>
+        <select asp-for="Status" class="form-control">
+            <option value="">Виберіть статус</option>
+            @foreach (var item in ViewBag.Statuses as List<SelectListItem>)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Змінити</button>
+</form>
+</div>

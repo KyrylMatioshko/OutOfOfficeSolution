@@ -1,0 +1,32 @@
+﻿.main-container {
+    display: flex;
+    gap: 20px;
+}
+
+.sub-container {
+    flex: 1; 
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.one-page-form {
+    padding: 50px;
+    box-shadow: 0 2px 30px rgba(0, 2, 2, 0.1);
+    background-color: #fff;
+    width: 50%;
+}
+
+td {
+    word-break: break-word;
+    white-space: normal;
+    min-width: 150px;
+    max-width: 500px;
+}

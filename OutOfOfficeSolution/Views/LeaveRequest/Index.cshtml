@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Leave Requests";
+
+    var role = User.IsInRole("Admin") ? "Admin" :
+               User.IsInRole("HR") ? "HR" :
+               User.IsInRole("PM") ? "PM" :
+               User.IsInRole("Employee") ? "Employee" : "quest";
+}
+
+@model IEnumerable<LeaveRequestViewModel>
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <form method="get" asp-controller="LeaveRequest" asp-action="Index" class="filter-form">
+        <tr>
+            <th>
+                <div class="form-group">
+                    <label for="status">Статус</label>
+                    <select name="status" class="form-control">
+                            @if (String.IsNullOrEmpty(ViewBag.CurrentStatus))
+                            {
+                            <option value="">Виберіть cтатус</option>
+                            }
+                            else
+                            {
+                            <option value="@ViewBag.CurrentStatus">@ViewBag.CurrentStatus</option>
+                            }
+                            @foreach (var item in ViewBag.Statuses)
+                            {
+                            <option value="@item.Value">@item.Text</option>
+                            }
+                    </select>
+                </div>
+            </th>
+
+            <th>
+                <div class="form-group">
+                    <label for="option">Параметр</label>
+                    <select name="option" class="form-control">
+                            @if (String.IsNullOrEmpty(ViewBag.CurrentOption))
+                            {
+                            <option value="">Виберіть параметр сортування</option>
+                            }
+                            else
+                            {
+                            <option value="@ViewBag.CurrentOption">@ViewBag.CurrentOption</option>
+                            }
+                            @foreach (var item in ViewBag.Options)
+                            {
+                            <option value="@item.Value">@item.Text</option>
+                            }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="form-group">
+                    <label for="direction">Напрямок</label>
+                    <select name="direction" class="form-control">
+                            @if (String.IsNullOrEmpty(ViewBag.CurrentDirection))
+                            {
+                            <option value="">Виберіть напрямок сортування</option>
+                            }
+                            else
+                            {
+                            <option value="@ViewBag.CurrentDirection">@ViewBag.CurrentDirection</option>
+                            }
+                            @foreach (var item in ViewBag.Directions)
+                            {
+                            <option value="@item.Value">@item.Text</option>
+                            }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <input type="hidden" name="IsForFiltering" value="true" />
+                <button class="btn-sm" type="submit">Виконати фільтрацію та сортування</button>
+            </th>
+        </tr>
+        </form>
+        </tr>
+    </thead>
+</table>
+
+@if (Model != null)
+{
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Причина відпустки</th>
+                <th>Дата початку відпустки</th>
+                <th>Дата кінця відпустки</th>
+                <th>Коментар</th>
+                <th>Статус</th>
+                <a asp-controller="LeaveRequest" asp-action="Create" class="btn btn-sm btn-info">Створити нову</a>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var leaveRequest in Model)
+            {
+                <tr>
+                    <td>@leaveRequest.AbsenceReason</td>
+                    <td>@leaveRequest.StartDate</td>
+                    <td>@leaveRequest.EndDate</td>
+                    <td>@leaveRequest.Comment</td>
+                    <td>@leaveRequest.Status</td>
+                    <td><a asp-controller="LeaveRequest" asp-action="Details" asp-route-leaveRequestId="@leaveRequest.Id" class="btn btn-sm btn-info">Деталі</a></td>
+                    @if (role == "Admin")
+                    {
+                        <td><a asp-controller="LeaveRequest" asp-action="Update" asp-route-leaveRequestId="@leaveRequest.Id" class="btn btn-sm btn-info">Оновити заявку</a></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>Поки що немає</h2>
+}
+
+

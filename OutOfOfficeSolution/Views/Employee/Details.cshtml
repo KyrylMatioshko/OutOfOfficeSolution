@@ -1,0 +1,29 @@
+﻿@using OutOfOfficeSolution.ViewModels
+@model EmployeeViewModel
+
+<h2>Детальна інформація про працівників</h2>
+
+<a asp-controller="Employee" asp-action="Index">Повернутися до працівників</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Повне ім'я</th>
+            <th>Відділ</th>
+            <th>Позиція</th>
+            <th>Статус</th>
+            <th>HR менеджер</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.FullName</td>
+            <td>@Model.Subdivision</td>
+            <td>@Model.Position</td>
+            <td>@Model.Status</td>
+            <td>
+                <span>@Model.PeoplePartnerNavigation?.FullName</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
